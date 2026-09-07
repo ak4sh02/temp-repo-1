@@ -1,0 +1,1632 @@
+Yes 👍 We can do it directly in chat. You can copy the whole thing into a file called AI_ENGINEERING_ROADMAP.md or give the sections to Cursor.
+
+I’ve also updated one detail from our earlier discussion: MCP's current 2026 specification/SDK has evolved, so when you reach Phase 4, Cursor should use the current official MCP Python SDK rather than an old tutorial. The current Python SDK is v2, and the July 2026 spec is the current stable specification. 
+
+🚀 AI Engineering 5-Phase Portfolio — Cursor Master Blueprint
+
+Overall Goal
+
+Build a connected Engineering Intelligence Platform that develops both:
+
+SDE2 skills
+
+OOP
+
+SOLID
+
+LLD
+
+design patterns
+
+testing
+
+architecture
+
+reliability
+
+observability
+
+scalability
+
+
+AI Engineering skills
+
+RAG
+
+evaluation
+
+MCP
+
+tool calling
+
+model abstraction
+
+model routing
+
+AI observability
+
+AI reliability
+
+
+
+Most important constraint
+
+> Every phase must work without paid AI.
+
+
+
+AI should be an optional layer, not a hard dependency.
+
+
+---
+
+Phase 1 — Static Code Analyzer
+
+🎯 Goal
+
+Build your own mini SonarQube-style Python static analyzer.
+
+Python Project
+      ↓
+Python AST
+      ↓
+Parser
+      ↓
+Rule Engine
+      ↓
+Findings
+      ↓
+Metrics
+      ↓
+JSON / HTML Report
+
+What to build
+
+1. Python parser
+
+Use:
+
+ast
+
+Parse:
+
+files
+
+classes
+
+functions
+
+imports
+
+decorators
+
+inheritance
+
+function calls
+
+variables
+
+dependencies
+
+
+
+---
+
+2. Rule engine
+
+Create something like:
+
+Rule
+ ├── rule_id
+ ├── name
+ ├── description
+ ├── severity
+ └── analyze()
+
+Rules should be pluggable.
+
+Example:
+
+rules/
+├── complexity.py
+├── naming.py
+├── python_quality.py
+├── architecture.py
+├── security.py
+└── design.py
+
+
+---
+
+Initial rules
+
+Python quality
+
+unused imports
+
+mutable default arguments
+
+missing type hints
+
+naming violations
+
+excessively long functions
+
+excessively long classes
+
+too many parameters
+
+deep nesting
+
+
+Complexity
+
+Calculate:
+
+cyclomatic complexity
+
+nesting depth
+
+branch count
+
+function size
+
+class size
+
+
+Architecture
+
+Detect:
+
+module dependencies
+
+circular dependencies
+
+excessive fan-out
+
+excessive fan-in
+
+dependency direction
+
+
+Design heuristics
+
+Detect possible:
+
+God classes
+
+low cohesion
+
+excessive public methods
+
+deep inheritance
+
+excessive coupling
+
+
+Security
+
+Basic static patterns:
+
+eval
+
+exec
+
+suspicious subprocess calls
+
+hard-coded credential patterns
+
+unsafe deserialization patterns
+
+
+
+---
+
+Finding model
+
+Finding
+
+rule_id
+severity
+category
+message
+file
+line
+column
+evidence
+suggestion
+confidence
+metadata
+
+Example:
+
+{
+  "rule_id": "DESIGN001",
+  "severity": "warning",
+  "category": "design",
+  "message": "Possible God Class",
+  "file": "payment_service.py",
+  "line": 10,
+  "confidence": 0.82
+}
+
+Notice:
+
+> Possible God Class
+
+
+
+not:
+
+> This is definitely a God Class.
+
+
+
+That's important because static analysis cannot fully understand developer intent.
+
+
+---
+
+Reports
+
+Generate:
+
+report.json
+report.html
+
+HTML should contain:
+
+Overall Score
+↓
+Critical Findings
+↓
+Warnings
+↓
+Code Metrics
+↓
+Architecture Graph
+↓
+File-by-file findings
+
+
+---
+
+CLI
+
+Something like:
+
+analyzer scan ./my-project
+
+analyzer scan ./my-project --format html
+
+analyzer scan ./my-project --rule DESIGN001
+
+
+---
+
+Phase 1 DESIGN.md
+
+Cursor must create:
+
+DESIGN.md
+
+Explain:
+
+1. Problem
+
+
+2. Goals
+
+
+3. Architecture
+
+
+4. AST processing
+
+
+5. Rule engine
+
+
+6. Finding model
+
+
+7. Severity model
+
+
+8. Dependency graph
+
+
+9. Report generation
+
+
+10. Testing
+
+
+11. Performance
+
+
+12. Limitations
+
+
+13. Future AI integration
+
+
+
+
+---
+
+Phase 1 Definition of Done
+
+15+ rules
+
+CLI
+
+JSON report
+
+HTML report
+
+dependency graph
+
+tests
+
+sample bad project
+
+README
+
+DESIGN.md
+
+
+
+---
+
+Phase 2 — SDE2 LLD & Code Review Engine
+
+Now take Phase 1 and turn it into something directly useful for your interviews.
+
+🎯 Goal
+
+User gives:
+
+Problem
++
+LLD
++
+Python implementation
++
+Tests
+
+System produces:
+
+Architecture Review
+Code Review
+Score
+Findings
+Recommendations
+Interview Questions
+
+
+---
+
+Architecture
+
+LLD Reviewer
+                         |
+        +----------------+----------------+
+        |                |                |
+   Code Analyzer    Design Analyzer    Test Analyzer
+        |                |                |
+        +----------------+----------------+
+                         |
+                    Score Engine
+                         |
+                  Review Report
+
+
+---
+
+Build without AI first
+
+Analyze classes
+
+Extract:
+
+Class
+ ├── methods
+ ├── fields
+ ├── dependencies
+ ├── parents
+ ├── interfaces
+ └── collaborators
+
+
+---
+
+Calculate
+
+Coupling
+
+How many other components does this class depend on?
+
+Cohesion
+
+Do the methods appear to operate around related responsibilities?
+
+Complexity
+
+Reuse Phase 1.
+
+Inheritance
+
+Calculate:
+
+inheritance depth
+
+number of children
+
+abstract/concrete ratio
+
+
+
+---
+
+SOLID heuristics
+
+Detect possible:
+
+SRP
+
+Class has multiple unrelated responsibility clusters.
+
+OCP
+
+Adding a new type requires modifying central conditional logic.
+
+DIP
+
+High-level business class directly constructs infrastructure.
+
+ISP
+
+Detect potentially oversized interfaces.
+
+
+---
+
+SDE2 Interview Mode
+
+Suppose the problem is:
+
+> Design Parking Lot.
+
+
+
+Your system can generate deterministic questions:
+
+1. How will you support different vehicle types?
+
+2. What happens if pricing changes?
+
+3. What if parking allocation becomes concurrent?
+
+4. Who owns the pricing responsibility?
+
+5. How would you add EV charging?
+
+6. How would you test this?
+
+7. What happens if the payment service fails?
+
+8. Where would you use Strategy Pattern?
+
+9. Would inheritance or composition be better here?
+
+10. How would you scale this?
+
+Later, an LLM can make these questions adaptive.
+
+
+---
+
+Supported LLD problems
+
+Start with:
+
+Parking Lot
+Library Management
+Splitwise
+Elevator
+Vending Machine
+Movie Ticket Booking
+
+Don't build all six immediately.
+
+Start with Parking Lot.
+
+
+---
+
+Phase 2 DESIGN.md
+
+Explain:
+
+How code becomes a design model
+        ↓
+How design metrics are calculated
+        ↓
+How SOLID heuristics work
+        ↓
+How scoring works
+        ↓
+How interview questions are generated
+        ↓
+Limitations
+
+
+---
+
+Phase 2 Definition of Done
+
+3 LLD problems
+
+design extraction
+
+architecture score
+
+code score
+
+SOLID heuristics
+
+coupling/cohesion
+
+test analysis
+
+interview questions
+
+evidence behind every finding
+
+README
+
+DESIGN.md
+
+
+
+---
+
+Phase 3 — RAG Evaluation Lab
+
+This is where I'd specifically avoid building a PDF chatbot.
+
+🎯 Goal
+
+Build a system that answers:
+
+> "How good is my RAG system?"
+
+
+
+rather than:
+
+> "Can I chat with a PDF?"
+
+
+
+
+---
+
+Architecture
+
+Documents
+    ↓
+Loader
+    ↓
+Chunker
+    ↓
+Indexer
+    ↓
+Retriever
+    ↓
+Evaluation Engine
+    ↓
+Experiment Report
+
+
+---
+
+Step 1 — Document loader
+
+Support:
+
+.md
+.txt
+
+Later:
+
+.pdf
+.html
+
+
+---
+
+Step 2 — Chunking
+
+Implement:
+
+Fixed chunking
+
+256
+512
+1024
+
+Sentence chunking
+
+Split based on sentences/paragraphs.
+
+Metadata
+
+Every chunk should know:
+
+document_id
+chunk_id
+source
+section
+position
+
+
+---
+
+Step 3 — Retrieval
+
+Start WITHOUT embeddings.
+
+Implement:
+
+TF-IDF
+
+or:
+
+BM25
+
+Then optionally:
+
+local embeddings
+
+Then:
+
+hybrid retrieval
+
+
+---
+
+Step 4 — Evaluation dataset
+
+Create:
+
+{
+  "question": "What is the payment timeout?",
+  "relevant_chunks": [
+    "payment_doc_17_chunk_3"
+  ]
+}
+
+
+---
+
+Metrics
+
+Implement:
+
+Recall@K
+
+Did we retrieve the relevant information?
+
+Precision@K
+
+How much retrieved information was relevant?
+
+Hit Rate
+
+Did we retrieve at least one relevant chunk?
+
+MRR
+
+How high was the first relevant result?
+
+NDCG
+
+How good was ranking?
+
+Latency
+
+How long did retrieval take?
+
+
+---
+
+Experiment system
+
+This is the interesting part.
+
+Run:
+
+Experiment A
+
+Chunk size = 256
+Retriever = BM25
+Top K = 5
+
+Then:
+
+Experiment B
+
+Chunk size = 512
+Retriever = BM25
+Top K = 5
+
+Then:
+
+Experiment C
+
+Chunk size = 512
+Retriever = Hybrid
+Top K = 5
+
+Compare:
+
+Recall
+Precision
+MRR
+NDCG
+Latency
+Index size
+
+
+---
+
+Later AI extension
+
+Only later:
+
+Retriever
+    ↓
+LLM
+    ↓
+Answer
+    ↓
+Evaluation
+
+Add:
+
+groundedness
+
+faithfulness
+
+answer relevance
+
+LLM-as-judge
+
+
+But these should be optional.
+
+
+---
+
+Phase 3 DESIGN.md
+
+Explain:
+
+What is RAG?
+Why chunking matters
+How retrieval works
+BM25 vs vector search
+Hybrid search
+Evaluation dataset
+Retrieval metrics
+Answer evaluation
+Limitations
+
+
+---
+
+Phase 3 Definition of Done
+
+100+ evaluation questions
+
+3+ retrieval configurations
+
+benchmark runner
+
+automated metrics
+
+experiment comparison
+
+reproducible results
+
+CLI
+
+README
+
+DESIGN.md
+
+
+
+---
+
+Phase 4 — MCP Engineering Tool Server
+
+Now things get interesting. 😎
+
+🎯 Goal
+
+Build a tool layer for software engineering.
+
+MCP is specifically designed to standardize how applications expose tools/resources/context to AI applications. The current MCP ecosystem supports tools, resources and prompts, and the official Python SDK supports MCP servers and clients. 
+
+
+---
+
+Architecture
+
+MCP Engineering Server
+                       |
+       +---------------+---------------+
+       |               |               |
+    Repository       Testing         Analyzer
+       |               |               |
+       +---------------+---------------+
+                       |
+                  RAG Knowledge
+
+
+---
+
+Engineering tools
+
+Repository
+
+list_files()
+search_code()
+read_file()
+get_commit()
+get_diff()
+
+Testing
+
+run_tests()
+get_test_failures()
+get_coverage()
+
+Analyzer
+
+Reuse Phase 1:
+
+run_static_analysis()
+get_findings()
+get_dependency_graph()
+
+RAG
+
+Reuse Phase 3:
+
+search_knowledge()
+retrieve_sources()
+
+
+---
+
+Important security layer
+
+This is where you demonstrate production thinking.
+
+Default:
+
+> READ ONLY
+
+
+
+Implement:
+
+Allowed directories
+Blocked directories
+Command allowlist
+Timeout
+Output size limit
+Audit logging
+
+Never allow:
+
+rm -rf
+arbitrary shell
+credential access
+filesystem escape
+
+unless explicitly designed and protected.
+
+
+---
+
+Deterministic workflow
+
+You don't need an LLM.
+
+User:
+
+> Analyze latest commit.
+
+
+
+System:
+
+get_latest_commit()
+       ↓
+get_diff()
+       ↓
+run_tests()
+       ↓
+run_static_analysis()
+       ↓
+build_report()
+
+Output:
+
+Changed files
+Tests
+Coverage
+Static findings
+Dependency impact
+Risk
+
+
+---
+
+Later agent
+
+Eventually:
+
+User
+ ↓
+LLM Agent
+ ↓
+MCP
+ ↓
+Tool
+ ↓
+Result
+ ↓
+LLM
+ ↓
+Next tool
+
+The MCP tool layer remains the same.
+
+The official SDK supports tools, resources and prompts, and current MCP tooling can be consumed by hosts such as Cursor and other AI applications. 
+
+
+---
+
+Phase 4 DESIGN.md
+
+Explain:
+
+What MCP solves
+Tool vs Resource vs Prompt
+Tool contracts
+Security
+Permissions
+Transport
+Error handling
+Timeouts
+Tool composition
+How agents consume tools
+
+
+---
+
+Phase 4 Definition of Done
+
+MCP server
+
+10+ engineering tools
+
+read-only by default
+
+validation
+
+timeouts
+
+error handling
+
+audit logs
+
+deterministic workflow
+
+tests
+
+README
+
+DESIGN.md
+
+
+
+---
+
+Phase 5 — LLM Gateway / Model Router
+
+🚪 "LLM Behind the Door"
+
+😂 This is the phrase we'll use.
+
+Your application shouldn't know:
+
+> Is it GPT?
+
+
+
+> Claude?
+
+
+
+> Gemini?
+
+
+
+> Local model?
+
+
+
+> Something else?
+
+
+
+It simply says:
+
+generate(request)
+
+
+---
+
+Architecture
+
+Application
+                       |
+                       ↓
+                 AI Gateway
+                       |
+        +--------------+--------------+
+        |              |              |
+      Router         Policy       Observability
+        |              |              |
+        +--------------+--------------+
+                       |
+              Provider Abstraction
+                       |
+       +---------------+---------------+
+       |               |               |
+     Mock            Local          Cloud
+    Provider         Model         Provider
+
+
+---
+
+Build WITHOUT AI
+
+Create fake models.
+
+FastCheapModel
+
+latency = 100ms
+cost = low
+quality = medium
+
+SlowStrongModel
+
+latency = 2 sec
+cost = high
+quality = high
+
+UnreliableModel
+
+sometimes fails
+
+LocalPrivateModel
+
+cost = 0
+privacy = high
+quality = medium
+
+Now you can test the entire gateway.
+
+
+---
+
+Routing
+
+Example:
+
+if task == "simple":
+    cheap_model()
+
+elif task == "coding":
+    coding_model()
+
+elif task == "reasoning":
+    strong_model()
+
+But eventually make this configurable.
+
+RoutingPolicy
+
+
+---
+
+Resilience
+
+Implement:
+
+Timeout
+
+Model takes too long
+        ↓
+timeout
+        ↓
+fallback
+
+Retry
+
+Model A
+ ↓ failure
+retry
+ ↓ failure
+Model B
+
+Circuit breaker
+
+Model A
+ ↓
+5 failures
+ ↓
+OPEN
+ ↓
+Stop sending traffic
+
+
+---
+
+Rate limiting
+
+Example:
+
+User A → 100 requests/hour
+User B → 50 requests/hour
+
+
+---
+
+Budget management
+
+Track:
+
+requests
+tokens
+estimated cost
+model
+user
+project
+
+
+---
+
+Observability
+
+Every request:
+
+request_id
+timestamp
+provider
+model
+latency
+status
+tokens
+estimated_cost
+fallback_used
+
+
+---
+
+Provider interface
+
+Provider
+
+name()
+capabilities()
+
+generate(request)
+
+health_check()
+
+Your application talks to:
+
+Gateway
+
+not:
+
+ClaudeProvider
+
+or:
+
+OpenAIProvider
+
+
+---
+
+Phase 5 DESIGN.md
+
+Explain:
+
+Why gateway?
+Provider abstraction
+Dependency inversion
+Routing
+Retry
+Timeout
+Circuit breaker
+Rate limiting
+Budget
+Caching
+Observability
+Failure handling
+Adding new providers
+
+
+---
+
+Phase 5 Definition of Done
+
+4 mock providers
+
+routing
+
+retry
+
+timeout
+
+fallback
+
+circuit breaker
+
+rate limiting
+
+budget tracking
+
+logs
+
+metrics
+
+tests
+
+provider abstraction
+
+
+
+---
+
+🔥 Final Integration
+
+Now combine everything.
+
+ENGINEERING
+                 INTELLIGENCE
+                   PLATFORM
+                      |
+      +---------------+---------------+
+      |               |               |
+ Static Analyzer    RAG             MCP
+      |               |               |
+      +---------------+---------------+
+                      |
+                 LLD Reviewer
+                      |
+                 AI Gateway
+                      |
+        +-------------+-------------+
+        |             |             |
+      Local         Cloud          Mock
+      Model         Model         Provider
+
+
+---
+
+Example End-to-End Flow
+
+You submit:
+
+> Design Parking Lot.
+
+
+
+Your system:
+
+Parking Lot
+                      ↓
+              Static Analyzer
+                      ↓
+             Design Extraction
+                      ↓
+               LLD Reviewer
+                      ↓
+              RAG Knowledge
+                      ↓
+              MCP Repository
+                      ↓
+               AI Gateway
+                      ↓
+             Optional LLM
+                      ↓
+             Final Evaluation
+
+Final report:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SDE2 DESIGN REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Overall: 78/100
+
+Architecture: 82
+SOLID:        74
+Extensibility: 81
+Testing:       69
+Code Quality:  84
+
+Critical Findings
+──────────────────
+1. ParkingLot has excessive responsibilities
+
+2. Pricing logic is tightly coupled
+
+3. New vehicle types require central modification
+
+4. Concurrency strategy is missing
+
+Interview Questions
+───────────────────
+1. How would you support EV spots?
+2. How would you handle concurrent allocation?
+3. Where would Strategy Pattern help?
+4. How would you scale this?
+
+
+---
+
+📚 Required Documentation
+
+Every project should have:
+
+README.md
+DESIGN.md
+tests/
+examples/
+
+For bigger projects:
+
+ARCHITECTURE.md
+CHANGELOG.md
+CONTRIBUTING.md
+
+
+---
+
+DESIGN.md Template
+
+This is especially important for you.
+
+Tell Cursor:
+
+> Don't just generate code. Create a detailed DESIGN.md so I can understand the system after implementation.
+
+
+
+Use this structure:
+
+# Project Design
+
+## 1. Problem
+
+What problem are we solving?
+
+## 2. Goals
+
+What should the system accomplish?
+
+## 3. Non-goals
+
+What are we deliberately not building?
+
+## 4. User Workflow
+
+Show a realistic example.
+
+## 5. Architecture
+
+Show the high-level architecture.
+
+## 6. Components
+
+For every component explain:
+
+- responsibility
+- input
+- output
+- dependencies
+- why it exists
+
+## 7. Data Model
+
+Explain important entities and relationships.
+
+## 8. Interfaces
+
+Explain important abstractions.
+
+## 9. Main Flow
+
+Explain the happy path.
+
+## 10. Failure Flow
+
+Explain what happens when things fail.
+
+## 11. Design Decisions
+
+Explain WHY each major decision was made.
+
+## 12. Alternatives
+
+What other designs were considered?
+
+## 13. SOLID / OOD
+
+Explain where principles are used.
+
+## 14. Performance
+
+Explain:
+
+- time complexity
+- space complexity
+- bottlenecks
+- scalability
+
+## 15. Reliability
+
+Explain:
+
+- timeout
+- retry
+- fallback
+- validation
+- graceful degradation
+
+## 16. Security
+
+Explain threats and mitigations.
+
+## 17. Testing Strategy
+
+Explain:
+
+- unit tests
+- integration tests
+- end-to-end tests
+
+## 18. Limitations
+
+What can this system NOT reliably determine?
+
+## 19. Future AI Integration
+
+How could an LLM be added later?
+
+## 20. Learning Notes
+
+What should an SDE2 / AI Engineer understand after building this?
+
+
+---
+
+🧑‍💻 Exact Cursor Workflow
+
+For each phase, use this process:
+
+1. Give Cursor blueprint
+          ↓
+2. Ask it to explain architecture
+          ↓
+3. Create DESIGN.md
+          ↓
+4. Review DESIGN.md yourself
+          ↓
+5. Create project skeleton
+          ↓
+6. Implement Milestone 1
+          ↓
+7. Write tests
+          ↓
+8. Run tests
+          ↓
+9. Fix issues
+          ↓
+10. Implement next milestone
+          ↓
+11. Update DESIGN.md
+          ↓
+12. Commit
+
+Don't do this:
+
+> "Cursor, build Phase 1 completely."
+
+
+
+Instead:
+
+> "Read the Phase 1 specification. First explain the architecture and create DESIGN.md. Do not implement yet."
+
+
+
+Then:
+
+> "Implement milestone 1 only. Add tests."
+
+
+
+Then:
+
+> "Run the tests and explain any failures."
+
+
+
+This will make Cursor your coding accelerator, while you remain the person learning the architecture.
+
+
+---
+
+🛠️ Suggested stack
+
+Area	Start with
+
+Language	Python 3.12+
+Testing	pytest
+Lint/format	Ruff
+Type checking	Pyright
+Parsing	ast
+Graphs	NetworkX
+Storage	SQLite
+RAG baseline	TF-IDF / BM25
+Reports	JSON + HTML
+API	FastAPI where useful
+MCP	Official MCP Python SDK
+AI	Mock/local first
+
+
+The official MCP Python SDK currently supports building MCP servers/clients and standard transports including stdio and Streamable HTTP. 
+
+
+---
+
+🏆 Your final portfolio story
+
+Don't say:
+
+> "I built five AI projects."
+
+
+
+Instead:
+
+> "I built an Engineering Intelligence Platform that combines deterministic static analysis, LLD evaluation, RAG retrieval evaluation, MCP-based engineering tools, and a provider-independent AI gateway. The platform is designed so AI is optional rather than a hard dependency."
+
+
+
+That's a much stronger SDE2 → AI Engineer story.
+
+And honestly, given your constraint of no paid AI, this is probably a better learning path than immediately building LLM wrappers. You're going to learn the engineering underneath AI rather than just learning how to call an API.
